@@ -28,8 +28,8 @@ const addReceipt = async (receipt) => {
   console.log('addReceipt:', receipt);
   try {
     const result = await conn.query(
-      'INSERT INTO receipts (receipt_id, lawsuit_id, expensesLeft, expensesRight, VAT, LeftAmount, rightAmount, totalAmount, sub_content, notes, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [receipt.receipt_id, receipt.lawsuit_id, JSON.stringify(receipt.expensesLeft), JSON.stringify(receipt.expensesRight), receipt.VAT, receipt.LeftAmount, receipt.rightAmount, receipt.totalAmount, receipt.sub_content, receipt.notes, receipt.createdAt]
+      'INSERT INTO receipts (receipt_id, lawsuit_id, expensesLeft, expensesRight, VAT, LeftAmount, rightAmount, totalAmount, sub_content, notes, createdAt, courtprice) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [receipt.receipt_id, receipt.lawsuit_id, JSON.stringify(receipt.expensesLeft), JSON.stringify(receipt.expensesRight), receipt.VAT, receipt.LeftAmount, receipt.rightAmount, receipt.totalAmount, receipt.sub_content, receipt.notes, receipt.createdAt, receipt.courtprice]
     );
     return result;
   } catch (error) {

@@ -8,7 +8,6 @@ const getReceiptsByLawsuitIdHandler = async (req, res) => {
   try {
     const filteredReceipts = await getAllReceipts(lawsuit_id, office_id);
     res.json(filteredReceipts);
-    console.log(filteredReceipts);
   } catch (error) {
     console.error(`Error in getReceiptsByLawsuitIdHandler: ${error.message}`);
     res.status(500).json({ message: '영수증 정보를 불러오는 중에 오류가 발생했습니다.' });
@@ -16,7 +15,7 @@ const getReceiptsByLawsuitIdHandler = async (req, res) => {
 };
 
 const saveReceiptHandler = async (req, res) => {
-  const { lawsuit_id, expensesLeft, expensesRight, VAT, LeftAmount, rightAmount, totalAmount, sub_content, notes } = req.body;
+  const { lawsuit_id, expensesLeft, expensesRight, VAT, LeftAmount, rightAmount, totalAmount, sub_content, notes, courtprice } = req.body;
 
   const receipt = {
     receipt_id: uuidv4(),
@@ -30,6 +29,7 @@ const saveReceiptHandler = async (req, res) => {
     sub_content,
     notes,
     createdAt: new Date(),
+    courtprice,
     office_id: req.user.office_id
   };
   
