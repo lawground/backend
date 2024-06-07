@@ -16,6 +16,8 @@ const login = async (req, res) => {
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log(password);
+    console.log(user.password);
     if (isPasswordValid) {
       const token = generateToken({ username: user.username, office_id: user.office_id });
       console.log('Login successful for user:', username);
