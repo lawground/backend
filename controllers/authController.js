@@ -8,23 +8,21 @@ const login = async (req, res) => {
   const { username, password } = req.body;
   
   try {
-    console.log('Login attempt:', username);
+
     const user = await getUserByUsername(username);
     if (!user) {
       console.log('User not found:', username);
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    console.log('Stored hashed password:', user.password);
+    
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    console.log('Password comparison result:', isPasswordValid);
 
     if (isPasswordValid) {
       const token = generateToken({ username: user.username, office_id: user.office_id });
-      console.log('Login successful for user:', username);
       return res.json({ token });
     } else {
-      console.log('Invalid password for user:', password);
+      console.log('Invalid password for user:', username);
       return res.status(401).json({ message: 'Invalid username or password' });
     }
   } catch (error) {
@@ -36,40 +34,33 @@ const login = async (req, res) => {
 const register = async (req, res) => {
   const { username, password, officeName, officeCode, role, name, phoneNumber, email } = req.body;
   try {
-    console.log('Register attempt:', username, officeName, officeCode);
     const office = await getOfficeByName(officeName);
     if (!office) {
-      console.log('Invalid office name:', officeName);
       return res.status(400).json({ message: 'Invalid office name' });
     }
-
-    const officeVerification = await getOfficeByCode(officeCode);
-    if (!officeVerification) {
-      console.log('Invalid office code:', officeCode);
+    const officeVerificatrion = await getOfficeByCode(officeCode);
+    if (!officeVerificatrion) {
       return res.status(400).json({ message: 'Invalid office code' });
     }
+    
 
     const userExists = await getUserByUsername(username);
     if (userExists) {
-      console.log('Username already exists:', username);
       return res.status(400).json({ message: 'Username already exists' });
-    } else {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      console.log('Hashed password:', hashedPassword);
-      const newUser = { id: uuidv4(), username, password: hashedPassword, office_id: office.office_id, role, name, phone: phoneNumber, email };
+    } 
+    
+    else {
+        const newUser = { id: uuidv4(), username, password, office_id: office.office_id, role, name, phone: phoneNumber, email };
       await createUser(newUser);
-      console.log('User registered successfully:', username);
       return res.status(201).json({ message: 'User registered successfully' });
     }
   } catch (error) {
-    console.error('Error during registration:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 };
 
 const getUserInfo = async (req, res) => {
   try {
-    console.log('Fetching user info for:', req.user.username);
     const user = await getUserByUsername(req.user.username);
     if (user) {
       return res.json(user);
@@ -84,15 +75,14 @@ const getUserInfo = async (req, res) => {
 };
 
 const searchOffices = async (req, res) => {
-  const searchQuery = req.query.q;
-  try {
-    console.log('Searching offices with query:', searchQuery);
+   const searchQuery = req.query.q;
+    try{
     const offices = await searchOffice(searchQuery);
-    console.log('Offices found:', offices);
+
     res.json(offices);
   } catch (error) {
-    console.error('Error during office search:', error);
-    res.status(500).json({ message: 'Internal server error' });
+
+    res.status(500).json({ message: '서버 오류가 발생했습니다.' });
   }
 };
 
