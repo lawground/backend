@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+require('dotenv').config();
+
 
 //라우터 설정
 const authRoutes = require('./routes/authRoutes');
