@@ -12,6 +12,15 @@ const masterPool = mysql.createPool({
   charset: 'utf8mb4'
 });
 
+masterPool.getConnection()
+  .then(connection => {
+    console.log('Database connection established');
+    connection.release();
+  })
+  .catch(err => {
+    console.error('Error connecting to the database:', err);
+  });
+
 module.exports = {
   masterPool
 };
