@@ -15,10 +15,10 @@ const login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
+    console.log('Stored hashed password:', user.password);
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    console.log(password);
-    console.log(bcrypt(password));
-    console.log(user.password);
+    console.log('Password comparison result:', isPasswordValid);
+
     if (isPasswordValid) {
       const token = generateToken({ username: user.username, office_id: user.office_id });
       console.log('Login successful for user:', username);
@@ -55,6 +55,7 @@ const register = async (req, res) => {
       return res.status(400).json({ message: 'Username already exists' });
     } else {
       const hashedPassword = await bcrypt.hash(password, 10);
+      console.log('Hashed password:', hashedPassword);
       const newUser = { id: uuidv4(), username, password: hashedPassword, office_id: office.office_id, role, name, phone: phoneNumber, email };
       await createUser(newUser);
       console.log('User registered successfully:', username);
