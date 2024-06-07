@@ -76,8 +76,7 @@ const getUserInfo = async (req, res) => {
 
 const searchOffices = async (req, res) => {
    const searchQuery = req.query.q;
-
-   try{
+    try{
     const offices = await searchOffice(searchQuery);
 
     res.json(offices);

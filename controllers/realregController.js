@@ -14,7 +14,6 @@ const getAllRealregsHandler = async (req, res) => {
 };
 
 const saveRealregHandler = async (req, res) => {
-    console.log(req.body);
     const realreg = {...req.body, realreg_id: uuidv4(), office_id: req.user.office_id }
     
     try{
@@ -30,7 +29,7 @@ const saveRealregHandler = async (req, res) => {
   const getRealregsByIdHandler = async (req, res) => {
     const realreg_id = req.params.realreg_id;
     const office_id = req.user.office_id;
-    console.log(`Fetching realreg for realreg_id: ${realreg_id}, office_id: ${office_id}`);
+    
     try {
       const realreg = await getRealregsById(realreg_id, office_id);
       if (realreg) {

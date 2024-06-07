@@ -1,11 +1,12 @@
-const { createOfficePool } = require('../db');
+const { masterPool } = require('../db');
+const getEventTableName = (office_id) => `office${office_id}_events`;
+
 
 const getAllEvents = async (office_id) => {
-  console.log('getAllEvents called with office_id:', office_id);
-  const officePool = createOfficePool(office_id);
-  const conn = await officePool.getConnection();
+  const conn = await masterPool.getConnection();
+  const tableName = getEventTableName(office_id);
   try {
-    const [rows] = await conn.query('SELECT * FROM events WHERE office_id = ?', [office_id]);
+    const [rows] = await conn.query(`SELECT * FROM ${tableName} WHERE office_id = ?`, [office_id]);
     return rows;
   } finally {
     conn.release();
@@ -13,13 +14,12 @@ const getAllEvents = async (office_id) => {
 };
 
 const createEvent = async (event) => {
-
   const { title, start, end, allDay, category, userRole, userName, office_id, color } = event;
-  const officePool = createOfficePool(office_id);
-  const conn = await officePool.getConnection();
+  const conn = await masterPool.getConnection();
+  const tableName = getEventTableName(office_id);
   try {
     const [result] = await conn.query(
-      'INSERT INTO events (title, start, end, allDay, category, userRole, userName, office_id, color) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      `INSERT INTO ${tableName} (title, start, end, allDay, category, userRole, userName, office_id, color) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [title, start, end, allDay, category, userRole, userName, office_id, color]
     );
     return result;
@@ -29,16 +29,14 @@ const createEvent = async (event) => {
 };
 
 const updateEvent = async (id, event) => {
-  console.log('updateEvent called with id:', id, 'and event:', event);
   const { title, start, end, allDay, category, userRole, userName, office_id, color } = event;
-  const officePool = createOfficePool(office_id);
-  const conn = await officePool.getConnection();
+  const conn = await masterPool.getConnection();
+  const tableName = getEventTableName(office_id);
   try {
     const [result] = await conn.query(
-      'UPDATE events SET title = ?, start = ?, end = ?, allDay = ?, category = ?, userRole = ?, userName = ?, office_id = ?, color = ? WHERE id = ?',
+      `UPDATE ${tableName} SET title = ?, start = ?, end = ?, allDay = ?, category = ?, userRole = ?, userName = ?, office_id = ?, color = ? WHERE id = ?`,
       [title, start, end, allDay, category, userRole, userName, office_id, color, id]
     );
-    console.log('Event updated with result:', result);
     return result;
   } finally {
     conn.release();
@@ -46,12 +44,10 @@ const updateEvent = async (id, event) => {
 };
 
 const deleteEvent = async (id, office_id) => {
-  console.log('deleteEvent called with id:', id, 'and office_id:', office_id);
-  const officePool = createOfficePool(office_id);
-  const conn = await officePool.getConnection();
+  const conn = await masterPool.getConnection();
+  const tableName = getEventTableName(office_id);
   try {
-    const [result] = await conn.query('DELETE FROM events WHERE id = ?', [id]);
-    console.log('Event deleted with result:', result);
+    const [result] = await conn.query(`DELETE FROM ${tableName} WHERE id = ?`, [id]);
     return result;
   } finally {
     conn.release();

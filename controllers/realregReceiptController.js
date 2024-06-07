@@ -58,7 +58,6 @@ const deleteReceiptHandler = async (req, res) => {
 const getReceiptByIdHandler = async (req, res) => {
     const receipt_id = req.params.receipt_id;
     const office_id = req.user.office_id;
-    console.log(`Fetching receipt for receipt_id: ${receipt_id}, office_id: ${office_id}`);
     try {
       const receipt = await getReceiptById(receipt_id, office_id);
       if (receipt) {

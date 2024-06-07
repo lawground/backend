@@ -44,7 +44,6 @@ const saveReceiptHandler = async (req, res) => {
 const getReceiptByIdHandler = async (req, res) => {
   const receipt_id = req.params.receipt_id;
   const office_id = req.user.office_id;
-  console.log(`Fetching receipt for receipt_id: ${receipt_id}, office_id: ${office_id}`);
   try {
     const receipt = await getReceiptById(receipt_id, office_id);
     if (receipt) {
@@ -61,7 +60,6 @@ const getReceiptByIdHandler = async (req, res) => {
 const deleteReceiptHandler = async (req, res) => {
   const receipt_id = req.params.receipt_id;
   const office_id = req.user.office_id;
-  console.log(`Deleting receipt for receipt_id: ${receipt_id}, office_id: ${office_id}`);
   try {
     await deleteReceipt(receipt_id, office_id);
     res.status(200).json({ message: '영수증이 성공적으로 삭제되었습니다.' });
