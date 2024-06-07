@@ -20,7 +20,6 @@ const getDatabaseName = (officeId) => {
 const createOfficePool = (officeId) => {
   const dbName = getDatabaseName(officeId);
   if (!pools[dbName]) {
-    console.log(`Creating new pool for database: ${dbName}`); // 디버깅 로그 추가
     pools[dbName] = mysql.createPool({
       host: '127.0.0.1',
       user: 'root',
@@ -32,7 +31,6 @@ const createOfficePool = (officeId) => {
       charset: 'utf8mb4'
     });
   } else {
-    console.log(`Using existing pool for database: ${dbName}`); // 디버깅 로그 추가
   }
   return pools[dbName];
 };

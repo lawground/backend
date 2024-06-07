@@ -1,10 +1,9 @@
 const { v4: uuidv4 } = require('uuid');
-const { getAllReceipts, addReceipt, getReceiptById, deleteReceipt } = require('../models/receiptModel');
+const { getAllReceipts, addReceipt, getReceiptById, deleteReceipt } = require('../models/lawsuitReceiptModel');
 
 const getReceiptsByLawsuitIdHandler = async (req, res) => {
   const lawsuit_id = req.params.id;
   const office_id = req.user.office_id;
-  console.log(`Fetching receipts for lawsuit_id: ${lawsuit_id}, office_id: ${office_id}`);
   try {
     const filteredReceipts = await getAllReceipts(lawsuit_id, office_id);
     res.json(filteredReceipts);
@@ -33,7 +32,6 @@ const saveReceiptHandler = async (req, res) => {
     office_id: req.user.office_id
   };
   
-  console.log('Saving receipt:', receipt);
   try {
     await addReceipt(receipt);
     res.status(200).json({ message: '영수증이 성공적으로 저장되었습니다.' });

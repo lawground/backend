@@ -1,5 +1,5 @@
 const express = require('express');
-const { getReceiptsByLawsuitIdHandler, saveReceiptHandler, getReceiptByIdHandler, deleteReceiptHandler } = require('../controllers/receiptController');
+const { getReceiptsByLawsuitIdHandler, saveReceiptHandler, getReceiptByIdHandler, deleteReceiptHandler } = require('../controllers/lawsuitReceiptController');
 const authenticateToken = require('../middleware/authenticate');
 
 const router = express.Router();

@@ -4,8 +4,13 @@ const bodyParser = require('body-parser');
 
 //라우터 설정
 const authRoutes = require('./routes/authRoutes');
+
+const realregRoutes = require('./routes/realregRoutes');
+const realregReceiptRoutes = require('./routes/realregReceiptRoutes');
+
 const lawsuitRoutes = require('./routes/lawsuitRoutes');
-const receiptRoutes = require('./routes/receiptRoutes');
+const lawsuitReceiptRoutes = require('./routes/lawsuitReceiptRoutes');
+
 const eventsRoutes = require('./routes/eventsRoutes');
 
 
@@ -18,9 +23,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //라우터 사용
 app.use('/api', authRoutes);
+
+app.use('/api', realregRoutes);
+app.use('/api', realregReceiptRoutes);
+
 app.use('/api', lawsuitRoutes);
-app.use('/api', receiptRoutes);
+app.use('/api', lawsuitReceiptRoutes);
+
 app.use('/api', eventsRoutes);
+
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
