@@ -17,13 +17,14 @@ const login = async (req, res) => {
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     console.log(password);
+    console.log(bcrypt(password));
     console.log(user.password);
     if (isPasswordValid) {
       const token = generateToken({ username: user.username, office_id: user.office_id });
       console.log('Login successful for user:', username);
       return res.json({ token });
     } else {
-      console.log('Invalid password for user:', username);
+      console.log('Invalid password for user:', password);
       return res.status(401).json({ message: 'Invalid username or password' });
     }
   } catch (error) {
