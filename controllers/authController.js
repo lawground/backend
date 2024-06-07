@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { generateToken } = require('../utils/token');
 const { getUserByUsername, createUser } = require('../models/userModel');
 const { getOfficeByName, getOfficeByCode, searchOffice } = require('../models/officeModel');
