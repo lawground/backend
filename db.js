@@ -1,6 +1,6 @@
 const mysql = require('mysql2/promise');
 
-클라우드 접속
+// 클라우드 접속
 const masterPool = mysql.createPool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
