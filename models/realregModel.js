@@ -20,7 +20,9 @@ const getAllRealregs = async (office_id) => {
       registration_date: format(new Date(row.registration_date), 'yyyy-MM-dd'),
       contract_date: format(new Date(row.contract_date), 'yyyy-MM-dd'),
       settlement_date: format(new Date(row.settlement_date), 'yyyy-MM-dd'),
-      settlement_time: formatTime(row.settlement_time)
+      settlement_time: formatTime(row.settlement_time),
+      buyers: JSON.parse(rows[0].buyers),
+      sellers: JSON.parse(rows[0].sellers)
     }));
   } finally {
     conn.release();
@@ -46,8 +48,8 @@ const saveRealreg = async (realreg) => {
     const newIndex = lastIndex + 1;
 
     const result = await conn.query(
-      `INSERT INTO ${tableName} (\`index\`, realreg_id, office_id, requester, division, registration_date, contract_date, settlement_date, settlement_time, repayment_status, sell_price, public_price, transaction_address, buyer, buyer_number, buyer_address, manager, effect, seller, seller_number, seller_address, memo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [newIndex, realreg.realreg_id, realreg.office_id, realreg.requester, realreg.division, realreg.registration_date, realreg.contract_date, realreg.settlement_date, realreg.settlement_time, realreg.repayment_status, realreg.sell_price, realreg.public_price, realreg.transaction_address, realreg.buyer, realreg.buyer_number, realreg.buyer_address, realreg.manager, realreg.effect, realreg.seller, realreg.seller_number, realreg.seller_address, realreg.memo]
+      `INSERT INTO ${tableName} (\`index\`, realreg_id, office_id, requester, division, registration_date, contract_date, settlement_date, settlement_time, repayment_status, sell_price, public_price, transaction_address, buyers, manager, effect, sellers, memo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [newIndex, realreg.realreg_id, realreg.office_id, realreg.requester, realreg.division, realreg.registration_date, realreg.contract_date, realreg.settlement_date, realreg.settlement_time, realreg.repayment_status, realreg.sell_price, realreg.public_price, realreg.transaction_address, JSON.stringify(realreg.buyers), realreg.manager, realreg.effect, JSON.stringify(realreg.sellers), realreg.memo]
     );
     return result;
   } finally {
@@ -66,6 +68,8 @@ const getRealregsById = async (realreg_id, office_id) => {
         registration_date: format(new Date(rows[0].registration_date), 'yyyy-MM-dd'),
         contract_date: format(new Date(rows[0].contract_date), 'yyyy-MM-dd'),
         settlement_date: format(new Date(rows[0].settlement_date), 'yyyy-MM-dd'),
+        buyers: JSON.parse(rows[0].buyers),
+        sellers: JSON.parse(rows[0].sellers),
       };
     }
     return null;
@@ -82,8 +86,8 @@ const updateRealreg = async (realreg) => {
   const tableName = getRealregTableName(realreg.office_id);
   try {
     const result = await conn.query(
-      `UPDATE ${tableName} SET requester = ?, division = ?, contract_date = ?, settlement_date = ?, settlement_time = ?, repayment_status = ?, sell_price = ?, public_price = ?, transaction_address = ?, buyer = ?, buyer_number = ?, buyer_address = ?, manager = ?, effect = ?, seller = ?, seller_number = ?, seller_address = ?, memo = ? WHERE realreg_id = ?`,
-      [realreg.requester, realreg.division, realreg.contract_date, realreg.settlement_date, realreg.settlement_time, realreg.repayment_status, realreg.sell_price, realreg.public_price, realreg.transaction_address, realreg.buyer, realreg.buyer_number, realreg.buyer_address, realreg.manager, realreg.effect, realreg.seller, realreg.seller_number, realreg.seller_address, realreg.memo, realreg.realreg_id]
+      `UPDATE ${tableName} SET requester = ?, division = ?, contract_date = ?, settlement_date = ?, settlement_time = ?, repayment_status = ?, sell_price = ?, public_price = ?, transaction_address = ?, buyers = ?, manager = ?, effect = ?, sellers = ?, memo = ? WHERE realreg_id = ?`,
+      [realreg.requester, realreg.division, realreg.contract_date, realreg.settlement_date, realreg.settlement_time, realreg.repayment_status, realreg.sell_price, realreg.public_price, realreg.transaction_address, JSON.stringify(realreg.buyers),realreg.manager, realreg.effect, JSON.stringify(realreg.sellers), realreg.memo, realreg.realreg_id]
     );
     return result;
   } finally {
