@@ -28,6 +28,7 @@ app.use('/api', lawsuitRoutes);
 app.use('/api', lawsuitReceiptRoutes);
 app.use('/api', eventsRoutes);
 
+
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
