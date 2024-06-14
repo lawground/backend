@@ -60,7 +60,7 @@ const saveEasyReceipt = async (easyreceipt) => {
   const updateEasyReceiptById = async (easyreceipt) => {
     const conn = await masterPool.getConnection();
     const tableName = getEasyReceiptTableName(easyreceipt.office_id);
-    console.log(easyreceipt);
+    
     try {
       const result = await conn.query(
         `UPDATE ${tableName} SET division1 = ?, division2 = ?, requester = ?, price = ?, registration_date = ?, manager = ?, memo = ?, expensesLeft = ?, expensesRight = ?, VAT = ?, LeftAmount = ?, rightAmount = ?, totalAmount = ?, lastTotalAmount = ?, paymentStatus = ?, taxInvoiceStatus = ?, createdAt = ? WHERE easyreceipt_id = ?`,

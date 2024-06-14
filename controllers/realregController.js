@@ -58,7 +58,7 @@ const saveRealregHandler = async (req, res) => {
   const deleteRealregHandler = async (req, res) => {
     const realreg_id = req.params.realreg_id;
     const office_id = req.user.office_id;
-    console.log(`Fetching realreg for realreg_id: ${realreg_id}, office_id: ${office_id}`);
+    
 
     try {
       await deleteRealreg(realreg_id, office_id);

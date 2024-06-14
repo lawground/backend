@@ -15,7 +15,7 @@ const getAllEasyReceiptsHandler = async (req, res) => {
 
 const saveEasyReceiptHandler = async (req, res) => {
     const easyreceipt = {...req.body, easyreceipt_id: uuidv4(), office_id: req.user.office_id, createdAt: new Date()}
-    console.log(easyreceipt);
+  
     try {
       await saveEasyReceipt(easyreceipt);
       res.status(200).json({ message: '영수증이 성공적으로 저장되었습니다.' });
@@ -58,7 +58,7 @@ const saveEasyReceiptHandler = async (req, res) => {
   const deleteEasyReceiptHandler = async (req, res) => {
     const easyreceipt_id = req.params.easyreceipt_id;
     const office_id = req.user.office_id;
-    console.log(`Fetching realreg for easyreceipt_id: ${easyreceipt_id}, office_id: ${office_id}`);
+
 
     try {
       await deleteEasyReceipt(easyreceipt_id, office_id);

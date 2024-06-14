@@ -1,8 +1,8 @@
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
 const { generateToken } = require('../utils/token');
-const { getUserByUsername, createUser } = require('../models/userModel');
-const { getOfficeByName, getOfficeByCode, searchOffice } = require('../models/officeModel');
+const { getUserByUsername, createUser, getUsersByRoleAndOffice } = require('../models/userModel');
+const { getOfficeByName, getOfficeByCode, searchOffice, getOfficeByOfficeId} = require('../models/officeModel');
 
 const login = async (req, res) => {
   const { username, password } = req.body;
@@ -32,8 +32,8 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  const { username, password, officeName, officeCode, role, name, phoneNumber, email } = req.body;
-  try {
+  const { username, password, officeName, officeCode, role, name, phoneNumber, email, number } = req.body;
+    try {
     const office = await getOfficeByName(officeName);
     if (!office) {
       return res.status(400).json({ message: 'Invalid office name' });
@@ -50,7 +50,7 @@ const register = async (req, res) => {
     } 
     
     else {
-        const newUser = { id: uuidv4(), username, password, office_id: office.office_id, role, name, phone: phoneNumber, email };
+        const newUser = { id: uuidv4(), username, password, office_id: office.office_id, role, name, phone: phoneNumber, email, number };
       await createUser(newUser);
       return res.status(201).json({ message: 'User registered successfully' });
     }
@@ -63,7 +63,16 @@ const getUserInfo = async (req, res) => {
   try {
     const user = await getUserByUsername(req.user.username);
     if (user) {
-      return res.json(user);
+      const office = await getOfficeByOfficeId(user.office_id);
+      if (office) {
+        return res.json({
+          ...user,
+          office
+        });
+      } else {
+        console.log('Office not found for user:', req.user.username);
+        return res.status(404).json({ message: 'Office not found' });
+      }
     } else {
       console.log('User not found:', req.user.username);
       return res.status(404).json({ message: 'User not found' });
@@ -86,9 +95,27 @@ const searchOffices = async (req, res) => {
   }
 };
 
+const getUsersByRoleAndOfficeHandler = async (req, res) => {
+  try {
+    const { role, office_id } = req.query;
+
+    if (!role || !office_id) {
+      return res.status(400).json({ message: 'Role and office_id are required' });
+    }
+
+    const users = await getUsersByRoleAndOffice(role, office_id);
+
+    res.json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   login,
   register,
   getUserInfo,
-  searchOffices
+  searchOffices,
+  getUsersByRoleAndOfficeHandler,
 };
