@@ -13,7 +13,7 @@ const masterPool = mysql.createPool({
   charset: 'utf8mb4'
 });
 
-// // 로컬 접속
+// 로컬 접속
 // const masterPool = mysql.createPool({
 //   host: '127.0.0.1',
 //   port: '3306',
