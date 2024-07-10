@@ -21,8 +21,8 @@ const getAllRealregs = async (office_id) => {
       contract_date: format(new Date(row.contract_date), 'yyyy-MM-dd'),
       settlement_date: format(new Date(row.settlement_date), 'yyyy-MM-dd'),
       settlement_time: formatTime(row.settlement_time),
-      buyers: JSON.parse(rows[0].buyers),
-      sellers: JSON.parse(rows[0].sellers)
+      buyers: JSON.parse(row.buyers),
+      sellers: JSON.parse(row.sellers)
     }));
   } finally {
     conn.release();
