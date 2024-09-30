@@ -6,6 +6,7 @@ require('dotenv').config();
 // 라우터 설정
 const authRoutes = require('./routes/authRoutes');
 const easyReceiptRoutes = require('./routes/easyReceiptRoutes');
+const coregRoutes = require('./routes/coregRoutes');
 const realregRoutes = require('./routes/realregRoutes');
 const realregReceiptRoutes = require('./routes/realregReceiptRoutes');
 const lawsuitRoutes = require('./routes/lawsuitRoutes');
@@ -22,6 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // 라우터 사용
 app.use('/api', authRoutes);
 app.use('/api', easyReceiptRoutes);
+app.use('/api', coregRoutes);
 app.use('/api', realregRoutes);
 app.use('/api', realregReceiptRoutes);
 app.use('/api', lawsuitRoutes);
